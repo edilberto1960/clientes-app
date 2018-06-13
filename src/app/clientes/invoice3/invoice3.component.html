@@ -1,0 +1,123 @@
+<form [formGroup]="form" (onSubmit)="save()">
+
+    <!-- <td class="text-right"><input list="browser" #searchBox id="searchBox" (keyup)="search(searchBox.value)" class="form-control">
+        <datalist id="browser" *ngFor="let hero of producto2">
+            <option value="{{hero.nombre}}">{{hero.nombre}}</option>
+    </datalist>
+    </td> -->
+    <div id="search-component">
+        <h4>Cliente Search</h4>
+
+        <input #searchcliente id="search-box" (keyup)="searchCliente(searchcliente.value)" placeholder="search-clientes" formControlName='searchCliente' />
+
+        <ul class="search-result">
+            <li *ngFor="let hero of clientes; let idx = index">
+                <a (click)="addCliente(idx)" style="cursor: pointer;">
+            {{hero.nombre}}
+          </a>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+    <strong>Shipped To:</strong><br>
+    <label>{{ customer_info.nombre  }}</label><br>
+    <label>{{ customer_info.apellido  }}</label><br>
+    <label>{{ customer_info.email  }}</label><br>
+
+    <hr/>
+    <div id="search-component">
+        <h4>Product Search</h4>
+
+        <input #searchBox id="search-box" (keyup)="search(searchBox.value)" placeholder="search" formControlName='search' />
+
+        <ul class="search-result">
+            <li *ngFor="let hero of producto2; let idx = index">
+                <a (click)="addItem(idx)" style="cursor: pointer;">
+            {{hero.nombre}}
+          </a>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Order summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td><strong>cl</strong></td>
+                                    <td><strong>stt</strong></td>
+                                    <td><strong>Item</strong></td>
+                                    <td class="text-center"><strong>Unit</strong></td>
+                                    <td class="text-center"><strong>Quantity</strong></td>
+                                    <td class="text-center"><strong>Cost</strong></td>
+                                    <td class="text-right"><strong>Totals</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="invoiceItems">
+                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                <tr *ngFor="let item of addItemArr.controls; let i=index;" [formGroupName]="i">
+                                    <td><span><button  md-icon-button (click)="removeItem(item)">
+                                      <div class="md-24" aria-label="remove">clear</div>
+                                      </button> {{i + 1}}. &nbsp;</span></td>
+                                    <td class="text-center"><input class="form-control" mdInput formControlName="id"></td>
+                                    <td class="text-center"><input id="{{i}}" class="form-control" mdInput formControlName="cantidad" autofocus="autofocus" /></td>
+                                    <td class="text-right"><input class="form-control" mdInput formControlName="nombre"></td>
+                                    <td class="text-right"><input class="form-control" mdInput formControlName="precio"></td>
+                                    <td><input class="form-control right_placeholder" mdInput disabled value="{{ item.value.total | currency  }}"></td>
+                                </tr>
+
+                            </tbody>
+                            <hr>
+                            <tr>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
+                                <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                                <td class="thick-line text-right"><input class="form-control right_placeholder" mdInput disabled value="{{ form.value.subTotal | currency  }}"></td>
+
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong>Shipping</strong></td>
+                                <td class="no-line text-right"><input style="direction: rtl;" mdInput type="number" formControlName="taxPercent" placeholder="% tax"></td>
+                                <td><input class="form-control right_placeholder" mdInput disabled value="{{ form.value.tax | currency  }}"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong>Total</strong></td>
+                                <input class="form-control right_placeholder" mdInput disabled value="{{ form.value.grantTotal | currency  }}">
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <button md-mini-fab (click)="addItem()" class="md-small">+</button>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <button (click)="save()" class="btn btn-outline-primary">Save</button>
+        </div>
+        <div class="col-sm-6">
+        </div>
+    </div>
+
+</form>
