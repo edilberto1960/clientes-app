@@ -112,6 +112,8 @@ addCliente(id) {
   this.form.controls['searchCliente'].setValue('');
 }
 
+
+
   addItem(id) {
     console.log('Valor de id', id);
     let newItem = new InvoiceItem();
