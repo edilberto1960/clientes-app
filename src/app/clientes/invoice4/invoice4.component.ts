@@ -23,7 +23,7 @@ export class InvoiceItem {
   producto = {
     id: 7,
     nombre: 'Tostada',
-    precio: 23
+    precio: '23'
   };
 
    invoiceItem: InvoiceItem;
@@ -41,16 +41,31 @@ export class InvoiceItem {
 })
 export class Invoice4Component implements OnInit {
 
+  productResult: Producto[];
+  clientes: Cliente[];
+
   form: FormGroup;
   subscription: Subscription;
 
   cliente: Cliente = {
+    apellido: 'Supplier Grains',
+    createAt: '2018-01-01',
+    email: 'vivere@gmail.coj',
+    foto: '',
     id: 10,
     nombre: 'Cia General de Viveres',
-    apellido: 'Granos',
-    createAt: '2018-01-01',
-    email: 'vivere@gmail.coj'
   };
+
+  customer_info = {
+    apellido: '',
+    createAt: '',
+    email: '',
+    foto: '',
+    id: 0,
+    nombre: '',
+
+  };
+
 
 
   invoice2Save = {
@@ -126,15 +141,38 @@ export class Invoice4Component implements OnInit {
     return this.form.get('invoiceItems') as FormArray;
 }
 
+
+
 addItem(id) {
   console.log('Valor de id', id);
-  this.addItemArr.push(this.fb.group(new InvoiceItem));
+  // this.addItemArr.push(this.fb.group(new InvoiceItem));
    console.log('Length en addItemArr ', this.addItemArr.length);
    console.log('addItemArr ', this.addItemArr);
-    // InvoiceItem.producto.precio = 20;
+   console.log('Valor de id', id);
+   let newItem = new InvoiceItem();
+   newItem.itemProducto = this.productResult[id].nombre;
+   newItem.producto.id = this.productResult[id].id;
+   newItem.producto.nombre = this.productResult[id].nombre;
+   newItem.producto.precio = this.productResult[id].precio;
+   newItem.precio = this.productResult[id].precio;
+   this.addItemArr.push(this.fb.group(newItem));
+    console.log(this.addItemArr.length);
+
 
   // console.log('controls[0]', this.addItemArr.controls[0].controls.producto.value.nombre);
   }
+
+  addCliente(id) {
+
+    console.log('valor de id', id);
+    console.log('valor de clientes', this.clientes);
+    this.cliente = this.clientes[id];
+    console.log('customer_info ', this.cliente);
+    this.form.controls['cliente'].setValue(this.cliente);
+    console.log('THIS INVOICE EN ADDCLIENTE: ', this.form);
+    // this.clientes = [];
+  }
+
 
   updateForm(data) {
 let sub = 0;
@@ -149,9 +187,9 @@ for ( let i = 0; i < data.invoiceItems.length; i++ ) {
   console.log('data invoiceItem ', data.invoiceItems[i].producto.nombre);
   console.log(' data invoiceItem precio', data.invoiceItems[i].precio);
   console.log(' data invoiceItem Producto precio', data.invoiceItems[i].producto.precio);
-    if (data.invoiceItems[i].precio > 0 ) {
-       data.invoiceItems[i].producto.precio = data.invoiceItems[0].precio;
-  }
+  //   if (data.invoiceItems[i].precio > 0 ) {
+  //      data.invoiceItems[i].producto.precio = data.invoiceItems[0].precio;
+  // }
 
   data.invoiceItems[i].total = data.invoiceItems[i].cantidad * data.invoiceItems[i].precio;
        sub += data.invoiceItems[i].total;
@@ -172,9 +210,9 @@ for ( let i = 0; i < data.invoiceItems.length; i++ ) {
     this.form = this.fb.group({
 
       cliente: this.cliente,
-       'createAt': new FormControl( '2018-05-29'),
-    'descripcion': new FormControl ('Compra de Granos'),
-    'observacion': new FormControl('Pago a 45 dias'),
+      'createAt': new FormControl( '2018-05-29'),
+      'descripcion': new FormControl ('Compra de Granos'),
+      'observacion': new FormControl('Pago a 45 dias'),
       invoiceItems: this.fb.array([]),
       subTotal: [{value: 0, disabled: true}],
       taxPercent: [],
@@ -207,6 +245,45 @@ for ( let i = 0; i < data.invoiceItems.length; i++ ) {
     this.createInvoice(jsonData);
 
   }
+
+  search( value ) {
+    console.log('Valor escogido ', value);
+    this.cargarCliente(value);
+    console.log('Valor de this.producto2', this.productResult);
+
+
+ }
+
+ searchCliente( value ) {
+  console.log('Valor escogido ', value);
+  this.searchClientes(value);
+  console.log('Valor de this.producto2', this.clientes);
+
+ }
+
+
+
+ cargarCliente(term): void {
+  this.activatedRoute.params.subscribe(params => {
+
+    if (term) {
+      this.clienteService.searchProduct(term).subscribe( (producto) => this.productResult = producto);
+
+    }
+  });
+}
+
+searchClientes(term): void {
+  this.activatedRoute.params.subscribe(params => {
+
+    if (term) {
+      this.clienteService.searchClientes(term).subscribe( (clientes) => this.clientes = clientes);
+
+    }
+  });
+}
+
+
 
   createInvoice(jsonData) {
 

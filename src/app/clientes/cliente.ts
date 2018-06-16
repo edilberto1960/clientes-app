@@ -1,9 +1,10 @@
 export class Cliente {
-  id = 1 ;
-  nombre = 'Cia General de Viveres';
   apellido = 'Granos';
   createAt = '2018-01-01';
   email = 'vivere@gmail.coj';
+  foto = '';
+  id = 1 ;
+  nombre = 'Cia General de Viveres';
 
   }
 

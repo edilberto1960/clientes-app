@@ -1,133 +1,257 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-8 bg-light">
-            <form [formGroup]="form" (onSubmit)="save()">
-
-                <br>
-                <strong>Shipped To:</strong><br>
-                <label>{{ cliente.apellido  }}</label><br>
-                <label>{{ cliente.nombre  }}</label><br>
-                <label>{{ cliente.email  }}</label><br>
-
-                <hr/>
-
-                <div class="form-group row">
-                    <label for="colFormLabel" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                        <input formControlName='createAt' type="date" class="form-control" id="colFormLabel" placeholder="Date">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="colFormLabel1" class="col-sm-2 col-form-label">Last Name</label>
-                    <div class="col-sm-10">
-                        <input formControlName='descripcion' type="text" class="form-control" id="colFormLabel1" placeholder="Description">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="colFormLabel" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                        <input formControlName='observacion' type="text" class="form-control" id="colFormLabel" placeholder="Observation">
-                    </div>
-                </div>
+<div class="card text-black-50 border  bg-light mb-3" style="max-width: 68rem;">
+    <form [formGroup]="form" (onSubmit)="save()">
+        <div class="container-fluid">
 
 
-                <button type="button" class="btn btn-outline-primary btn-sm btn-block">Add Item level-line</button>
+            <div class="card-header">
+                <h5>Triger Natural Food Co.</h5>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Secondary card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <hr class="border">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><strong>Order summary</strong></h3>
+            <div class="row">
+                <div class="col-sm-9 bg-light">
+
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group row">
+                                <label for="colFormLabel" class="col-sm-2 col-form-label"><p><small><strong>Date Issue</strong></small></p></label>
+                                <div class="col-sm-3">
+                                    <input formControlName='createAt' type="date" class="form-control-plaintext small" id="colFormLabel" placeholder="Date">
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-condensed">
-                                        <thead>
+                            <div class="form-group row">
+                                <label for="colFormLabel" class="col-sm-2 col-form-label"><p><small><strong>Due Date</strong></small></p></label>
+                                <div class="col-sm-3">
+                                    <input formControlName='createAt' type="date" class="form-control-plaintext small" id="colFormLabel" placeholder="Date">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabel1" class="col-sm-2 col-form-label"><p><small><strong>Description</strong></small></p></label>
+                                <div class="col-sm-10">
+                                    <input formControlName='descripcion' type="text" class="form-control form-control-sm" id="colFormLabel1" placeholder="Description">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabel" class="col-sm-2 col-form-label"><p><small><strong>Observation</strong></small></p></label>
+                                <div class="col-sm-10">
+                                    <input formControlName='observacion' type="text" class="form-control form-control-sm" id="colFormLabel" placeholder="Observation">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <strong>Shiped To:</strong><br>
+                            <!-- <input type="text" formControlName="nombre"> -->
+                            <label><small>{{ cliente.nombre  }}</small></label><br>
+                            <label><small>{{ cliente.email  }}</small></label><br>
+                            <label><small>{{ cliente.apellido  }}</small></label><br>
+                            <br>
+
+                        </div>
+                    </div>
+
+                    <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-secondary btn-sm btn-block">Add Item level-line</button>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><strong>Order summary</strong></h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <td><strong>Code</strong></td> -->
+                                                    <td colspan="1">Item</td>
+                                                    <td colspan="1">Amount</td>
+                                                    <!--scopeclass="text-center"><small><strong>Cost</strong></small></td> -->
+                                                    <td scope="col"> Cost</td>
+                                                    <td scope="col">Total</td>
+                                                    <td scope="col">cl</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody formArrayName="invoiceItems">
+                                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                                <tr *ngFor="let item of addItemArr.controls; let i=index;" [formGroupName]="i">
+                                                    <!-- <td></td> -->
+                                                    <!-- <td><input class="form-control form-control-sm" formControlName="id"></td> -->
+                                                    <td colspan="1" class="text-center">
+                                                        <input type="text" style="border:none" class="btn-outline-secondary" size="40" disabled value="{{ item.value.producto.nombre | lowercase  }}">
+                                                    </td>
+                                                    <td><input size="2" formControlName="cantidad" autofocus="autofocus" /></td>
+                                                    <!-- <td class="text-right"><input class="form-control" mdInput formControlName="nombre"></td> -->
+                                                    <!-- <td><input class="form-control form-control-sm" disabled value="{{ item.value.producto.precio | number }}"></td> -->
+                                                    <td><input type="text" size="5" formControlName="precio"></td>
+                                                    <td><input type="text" size="9" disabled value="{{ item.value.total | currency  }}"></td>
+                                                    <td><button (click)="removeItem(item)" class="btn btn-outline-danger btn-sm">
+                                                        clear {{i + 1}}</button> </td>
+                                                </tr>
+                                            </tbody>
+
                                             <tr>
-                                                <td><strong>cl</strong></td>
-                                                <td><strong>stt</strong></td>
-                                                <td><strong>Item</strong></td>
-                                                <td class="text-center"><strong>Amount</strong></td>
-                                                <td class="text-center"><strong>Cost</strong></td>
-                                                <td class="text-center"><strong>New Cost?</strong></td>
-                                                <td class="text-right"><strong>Totals</strong></td>
+                                                <!-- <td class="no-line"></td> -->
+                                                <!-- <td class="col"></td> -->
+                                                <td class="col"></td>
+                                                <td class="col"></td>
+                                                <td><strong>Subtotal</strong></td>
+                                                <td><input size="10" disabled value="{{ form.value.subTotal | currency  }}"></td>
                                             </tr>
-                                        </thead>
-                                        <tbody formArrayName="invoiceItems">
-                                            <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                            <tr *ngFor="let item of addItemArr.controls; let i=index;" [formGroupName]="i">
-                                                <td><span><button  md-icon-button (click)="removeItem(item)">
-                                <div class="md-24" aria-label="remove">clear</div>
-                                </button> {{i + 1}}. &nbsp;</span></td>
-                                                <td class="text-center"><input class="form-control" mdInput formControlName="id"></td>
-                                                <td><input class="form-control right_placeholder" mdInput disabled value="{{ item.value.producto.nombre | uppercase  }}"></td>
-                                                <td class="text-center"><input id="{{i}}" class="form-control" mdInput formControlName="cantidad" autofocus="autofocus" /></td>
-                                                <!-- <td class="text-right"><input class="form-control" mdInput formControlName="nombre"></td> -->
-                                                <td><input class="form-control right_placeholder" mdInput disabled value="{{ item.value.producto.precio | number }}"></td>
-                                                <td class="text-right"><input class="form-control" mdInput formControlName="precio"></td>
-                                                <td><input class="form-control right_placeholder" mdInput disabled value="{{ item.value.total | currency  }}"></td>
+
+                                            <tr>
+                                                <!-- <td class="col"></td> -->
+                                                <td class="col"></td>
+                                                <td><strong>Tax</strong></td>
+                                                <td><input type="text" size="2" formControlName="taxPercent" placeholder="% tax"></td>
+                                                <td><input type="text" size="10" disabled value="{{ form.value.tax | currency  }}"></td>
 
                                             </tr>
 
-                                        </tbody>
-                                        <hr>
-
-
-
-                                        <tr>
-                                            <td class="thick-line"></td>
-                                            <td class="thick-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                                            <td class="thick-line text-right"><input class="form-control right_placeholder" mdInput disabled value="{{ form.value.subTotal | currency  }}"></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line text-center"><strong>Shipping</strong></td>
-                                            <td class="no-line text-right"><input style="direction: rtl;" mdInput type="number" formControlName="taxPercent" placeholder="% tax"></td>
-                                            <td><input class="form-control right_placeholder" mdInput disabled value="{{ form.value.tax | currency  }}"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="no-line text-center"><strong>Total</strong></td>
-                                            <input class="form-control right_placeholder" mdInput disabled value="{{ form.value.total | currency  }}">
-                                        </tr>
-
-                                    </table>
+                                            <tr>
+                                                <!-- <td class="no-line"></td> -->
+                                                <!-- <td class="col"></td> -->
+                                                <td class="col"></td>
+                                                <td class="col"></td>
+                                                <td><strong>Total</strong></td>
+                                                <td><input size="10" disabled value="{{ form.value.total | currency  }}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="row">
-                    <button md-mini-fab (click)="addItem()" class="md-small">+</button>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <button (click)="save()" class="btn btn-outline-primary">Save</button>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="button" (click)="save()" class="btn btn-outline-primary btn-sm btn-block">Add Innvoice</button>
+                        </div>
+                        <div class="col-sm-6">
+                        </div>
                     </div>
-                    <div class="col-sm-6">
+                    <br>
+
+                </div>
+                <div class="col-sm-3 bg-light">
+                    <!-- <label>Second label </label> -->
+                    <div class="card border mb-3 shadow p-3 mb-5 bg-white rounded" style="max-width: 18rem;">
+                        <div class="card-header"><strong>Invoice #</strong> A00002</div>
+                        <div class="card-body text-primary">
+                            <h5 class="card-title">Ammount Due</h5>
+                            <h2 class="card-text">
+                                {{ form.value.total | currency }}
+                            </h2>
+                            <hr/>
+                            <strong>Billed To:</strong><br>
+
+                            <button #searchcliente id="search-box" data-toggle="modal" data-target="#exampleModalCenter2" class="button btn-outline-primary">add Customer</button>
+
+                            <label>{{ cliente.nombre  }}</label><br>
+                            <label>{{ cliente.email  }}</label><br>
+                            <label>{{ cliente.apellido  }}</label><br>
+
+
+                            <hr/>
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio1">8 days</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio2">15 days</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio3">30 days</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio4">45 days</label>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-            </form>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="search-component">
+                            <h4>Product Search</h4>
+
+                            <input #searchBox id="search-box" (keyup)="search(searchBox.value)" placeholder="search" />
+
+                            <ul class="search-result">
+                                <div class="custom-control custom-checkbox" *ngFor="let hero of productResult; let idx = index">
+                                    <input type="checkbox" (click)="addItem(idx)" style="cursor: pointer;" class="custom-control-input" id="{{idx}}">
+                                    <label class="custom-control-label" for="{{idx}}">{{hero.nombre}} | ${{hero.precio}}</label>
+                                </div>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4 bg-info">
-            <label>Second label </label>
+
+        <!-- Modal Clientes -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="search-component">
+                            <h4>Product Search</h4>
+
+                            <input #searchcliente id="search-box" (keyup)="searchCliente(searchcliente.value)" placeholder="search" />
+
+
+                            <div class="custom-control custom-radio" *ngFor="let hero of clientes; let idx = index">
+                                <input class="custom-control-input" type="radio" (click)="addCliente(idx)" name="exampleRadios" id="cliente{{idx}}" value="option{{idx}}">
+                                <label class="custom-control-label" for="cliente{{idx}}">
+                                            {{hero.id}}, {{hero.nombre}}, {{hero.apellido}}, {{hero.email}}
+                                    </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+
+
+
+    </form>
 </div>
